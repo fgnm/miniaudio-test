@@ -43,7 +43,7 @@ public class MiniAudioTest extends ApplicationAdapter {
 		maGroup.setSpatialization(true);
 		//int res = miniAudio.playSound("game.ogg");
 		//System.out.println(res);
-		maSound = miniAudio.createSound("audio/file_example_OOG_5MG.ogg", (short) 0, maGroup);
+		maSound = miniAudio.createSound("click.mp3", (short) 0, maGroup);
 		delayNode = new MADelayNode(miniAudio, 0.2f, 0.5f);
 		/*miniAudio.attachToEngineOutput(delayNode, 0);
 		delayNode.attachToThisNode(maGroup, 0);*/
@@ -55,9 +55,11 @@ public class MiniAudioTest extends ApplicationAdapter {
 		lowPassFilter.attachToThisNode(splitter, 0);
 		delayNode.attachToThisNode(splitter, 1);
 		//splitter.attachToThisNode(maGroup, 0);
-		maSound.loop();
+		//maSound.loop();
 		System.out.println(maSound.getLength());
 	}
+
+	float count;
 
 	@Override
 	public void render() {
@@ -66,6 +68,13 @@ public class MiniAudioTest extends ApplicationAdapter {
 		batch.begin();
 		batch.draw(image, 140, 210);
 		batch.end();
+		count += Gdx.graphics.getDeltaTime();
+		if(count > 0.2F){
+			long m = Runtime.getRuntime().totalMemory()-Runtime.getRuntime().freeMemory();
+			System.out.println(m / 10000);
+			maSound.play();
+			count = 0;
+		}
 		//System.out.println(maSound.getCursorPosition());
 		angle += MathUtils.PI / 4f / 100f;
 		//maGroup.setPosition(MathUtils.sin(angle), 0f, -MathUtils.cos(angle));
